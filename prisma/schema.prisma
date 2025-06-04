@@ -25,6 +25,7 @@ model Recipe {
   description String?
   calories    Int?
   authorId    String
+  isPublic    Boolean          @default(false)
   createdAt   DateTime         @default(now())
   updatedAt   DateTime         @updatedAt
 
