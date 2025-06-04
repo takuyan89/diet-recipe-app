@@ -14,10 +14,10 @@ export const Header = () => {
           <Link href='/' className='hover:text-black'>
             Home
           </Link>
-          <Link href='/about' className='hover:text-black'>
+          <Link href='/recipe' className='hover:text-black'>
             レシピ一覧
           </Link>
-          <Link href='/contact' className='hover:text-black'>
+          <Link href='/category' className='hover:text-black'>
             カテゴリー一覧
           </Link>
         </nav>
