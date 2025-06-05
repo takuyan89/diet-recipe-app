@@ -1,4 +1,4 @@
-import CategoryCard2 from './CategoryCard2';
+import CategoryCard2 from '../ui/card/CategoryCard2';
 
 const fakeLists = [
   {

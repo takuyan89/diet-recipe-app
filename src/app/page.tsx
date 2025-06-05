@@ -1,5 +1,5 @@
 import { CategoryContainer } from './components/top/CategoryContainer';
-import { RecipeContainer } from './components/recipe/RecipeContainer';
+import { RecipeContainer } from './components/top/RecipeContainer';
 import { SearchBar } from './components/top/SearchBar';
 
 export default function TopPage() {
