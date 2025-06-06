@@ -1,5 +1,5 @@
 import { createRecipe } from '@/app/features/api/recipe/createRecipe';
-import { getRecipes } from '@/app/features/api/recipe/getRecipe';
+import { getRecipes } from '@/app/features/api/recipe/getRecipes';
 import { NextRequest } from 'next/server';
 
 export async function GET(request: NextRequest) {

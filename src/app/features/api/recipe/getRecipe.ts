@@ -1,13 +1,19 @@
 import { PrismaClient } from '@/generated/prisma';
 import { NextRequest, NextResponse } from 'next/server';
 
-export const getRecipes = async (request: NextRequest) => {
+export const getRecipe = async (request: NextRequest, id: string) => {
   const prisma = new PrismaClient();
   try {
-    const recipes = await prisma.recipe.findMany();
-    return NextResponse.json(recipes);
+    const recipe = await prisma.recipe.findUnique({
+      where: { id },
+      include: {
+        ingredients: true,
+        steps: true,
+      },
+    });
+    return NextResponse.json(recipe);
   } catch (error) {
-    console.error('Error fetching recipes:', error);
-    return NextResponse.json({ error: 'Failed to fetch recipes' }, { status: 500 });
+    console.error('Error fetching recipe:', error);
+    return NextResponse.json({ error: 'Failed to fetch recipe' }, { status: 500 });
   }
 };
