@@ -1,11 +1,8 @@
-import { RecipeContainer } from '../components/recipe/RecipeContainer';
-import { SearchBarInRecipe } from '../components/recipe/SearchBarInRecipe';
+import { use } from 'react';
+import { ClientRecipeWrapper } from '../components/recipe/ClientRecipeWrapper';
 
-export default function RecipePage() {
-  return (
-    <div className='flex flex-col items-center justify-center h-full w-full bg-gray-200 p-4'>
-      <SearchBarInRecipe />
-      <RecipeContainer />
-    </div>
-  );
+export default function RecipePage({ searchParams }: { searchParams: Promise<{ query?: string }> }) {
+  const { query } = use(searchParams);
+  const keyword = query ?? '';
+  return <ClientRecipeWrapper keyword={keyword} />;
 }

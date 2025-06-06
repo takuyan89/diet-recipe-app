@@ -1,8 +1,18 @@
-export default function BasicInfo() {
+import { Recipe } from '@/generated/prisma';
+
+type Props = {
+  data?: Recipe;
+};
+
+export default function BasicInfo({ data }: Props) {
   return (
     <div className='flex items-center justify-center h-full w-full  bg-gray-200'>
       <div>写真</div>
-      <div>基本情報</div>
+      <div>
+        <h1>{data?.title}</h1>
+        <p>説明：{data?.description}</p>
+        <p>{data?.calories}kcal</p>
+      </div>
     </div>
   );
 }

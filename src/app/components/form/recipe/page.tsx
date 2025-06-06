@@ -9,7 +9,6 @@ type RecipeFormValues = {
   imageUrl: string;
   description: string;
   calories: number;
-  isPublic: boolean;
 };
 
 type StepFormValues = {
@@ -172,13 +171,6 @@ export default function RecipeForm() {
             className='border rounded p-2 w-full'
             placeholder='例: 450'
           />
-        </div>
-
-        <div className='flex items-center gap-2'>
-          <input type='checkbox' {...register('recipe.isPublic')} id='isPublic' />
-          <label htmlFor='isPublic' className='font-semibold'>
-            公開する
-          </label>
         </div>
       </div>
 
