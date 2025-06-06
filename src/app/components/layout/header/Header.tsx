@@ -24,7 +24,10 @@ export const Header = () => {
 
         {/* ログイン */}
         <div className='space-x-4'>
-          <Link href='/login' className='px-4 py-2 bg-yellow-300 text-black rounded hover:bg-yellow-500 transition'>
+          <Link
+            href='/recipe/new'
+            className='px-4 py-2 bg-yellow-300 text-black rounded hover:bg-yellow-500 transition'
+          >
             レシピを書く
           </Link>
           <Link href='/login' className='px-4 py-2 bg-yellow-300 text-black rounded hover:bg-yellow-500 transition'>
