@@ -2,6 +2,7 @@
 
 import { useForm, useFieldArray } from 'react-hook-form';
 import { useState } from 'react';
+import { useRouter } from 'next/navigation';
 
 type RecipeFormValues = {
   title: string;
@@ -28,6 +29,7 @@ type FullRecipeFormValues = {
 };
 
 export default function RecipeForm() {
+  const router = useRouter();
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
 
   const {
@@ -75,7 +77,6 @@ export default function RecipeForm() {
 
       ingredients: values.ingredients.map((ingredient, index) => ({
         ...ingredient,
-        order: index + 1,
       })),
       steps: values.steps.map((step, index) => ({
         ...step,
@@ -97,8 +98,7 @@ export default function RecipeForm() {
       }
 
       const data = await response.json();
-      console.log('Recipe saved successfully:', data);
-      // Optionally, redirect or show success message
+      router.push(`/recipe/${data.id}`);
     } catch (error) {
       console.error('Error saving recipe:', error);
       // Optionally, show error message to the user

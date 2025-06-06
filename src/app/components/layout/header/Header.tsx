@@ -30,9 +30,6 @@ export const Header = () => {
           >
             レシピを書く
           </Link>
-          <Link href='/login' className='px-4 py-2 bg-yellow-300 text-black rounded hover:bg-yellow-500 transition'>
-            Login
-          </Link>
         </div>
       </div>
     </header>
