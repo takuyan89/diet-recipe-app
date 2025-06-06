@@ -8,28 +8,14 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model User {
-  id        String    @id @default(uuid())
-  email     String    @unique
-  password  String
-  name      String
-  createdAt DateTime  @default(now())
-
-  recipes   Recipe[]
-}
-
 model Recipe {
   id          String           @id @default(uuid())
   title       String
   imageUrl    String?
   description String?
   calories    Int?
-  authorId    String
-  isPublic    Boolean          @default(false)
   createdAt   DateTime         @default(now())
   updatedAt   DateTime         @updatedAt
-
-  author      User             @relation(fields: [authorId], references: [id])
   ingredients Ingredient[]
   steps       Step[]
   categories  RecipeCategory[] @relation("RecipeToCategory")

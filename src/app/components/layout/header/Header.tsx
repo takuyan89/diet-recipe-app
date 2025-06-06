@@ -14,21 +14,21 @@ export const Header = () => {
           <Link href='/' className='hover:text-black'>
             Home
           </Link>
-          <Link href='/about' className='hover:text-black'>
+          <Link href='/recipe' className='hover:text-black'>
             レシピ一覧
           </Link>
-          <Link href='/contact' className='hover:text-black'>
+          <Link href='/category' className='hover:text-black'>
             カテゴリー一覧
           </Link>
         </nav>
 
         {/* ログイン */}
         <div className='space-x-4'>
-          <Link href='/login' className='px-4 py-2 bg-yellow-300 text-black rounded hover:bg-yellow-500 transition'>
+          <Link
+            href='/recipe/new'
+            className='px-4 py-2 bg-yellow-300 text-black rounded hover:bg-yellow-500 transition'
+          >
             レシピを書く
-          </Link>
-          <Link href='/login' className='px-4 py-2 bg-yellow-300 text-black rounded hover:bg-yellow-500 transition'>
-            Login
           </Link>
         </div>
       </div>

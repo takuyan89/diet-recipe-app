@@ -1,14 +1,11 @@
-import { PrismaClient } from '@/generated/prisma';
-import { NextResponse } from 'next/server';
+import { createRecipe } from '@/app/features/api/recipe/createRecipe';
+import { getRecipes } from '@/app/features/api/recipe/getRecipe';
+import { NextRequest } from 'next/server';
 
-export async function GET() {
-  const prisma = new PrismaClient();
-  try {
-    const recipes = await prisma.recipe.findMany();
+export async function GET(request: NextRequest) {
+  return await getRecipes(request);
+}
 
-    return NextResponse.json(recipes);
-  } catch (error) {
-    console.error('Error fetching recipes:', error);
-    return NextResponse.json({ error: 'Failed to fetch recipes' }, { status: 500 });
-  }
+export async function POST(request: NextRequest) {
+  return await createRecipe(request);
 }
