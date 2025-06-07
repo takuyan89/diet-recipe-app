@@ -11,10 +11,10 @@ export const Header = () => {
 
         {/* ナビゲーション */}
         <nav className='hidden md:flex gap-3 text-gray-600'>
-          <Link href='/' className='hover:text-black'>
+          <Link href='/' className='font-bold hover:text-black'>
             Home
           </Link>
-          <Link href='/recipe' className='hover:text-black'>
+          <Link href='/recipe' className='font-bold hover:text-black'>
             レシピ一覧
           </Link>
         </nav>
@@ -23,7 +23,7 @@ export const Header = () => {
         <div className='space-x-4'>
           <Link
             href='/recipe/new'
-            className='px-4 py-2 bg-yellow-300 text-black rounded hover:bg-yellow-500 transition'
+            className='px-4 py-2 bg-yellow-300 text-black rounded hover:bg-yellow-500 transition '
           >
             レシピを書く
           </Link>

@@ -1,31 +1,33 @@
 'use client';
 import { useEffect, useState } from 'react';
 import { CategoryCard } from '../ui/card/CategoryCard';
+import { Category } from '@/generated/prisma';
 
 export const CategoryList = () => {
-  const [categories, setCategories] = useState([]);
+  const [categories, setCategories] = useState<Category[]>([]);
 
   const fetchCategories = async () => {
     try {
-      const data = await fetch('api/category');
-      if (!data.ok) {
-        throw new Error('Network response was not ok');
+      const response = await fetch('api/category');
+      if (!response.ok) {
+        throw new Error('ネットワークエラー: カテゴリーの取得に失敗しました。');
       }
-      const recipes = await data.json();
+      const recipes = await response.json();
       setCategories(recipes);
     } catch (error) {
-      console.error('Error fetching recipes:', error);
+      console.error(error);
     }
   };
+
   useEffect(() => {
     fetchCategories();
   }, []);
 
-  console.log('categories', categories);
-
   return (
-    <>
-      <CategoryCard data={categories} />
-    </>
+    <div className='grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4 p-4'>
+      {categories.map((category) => (
+        <CategoryCard category={category} key={category.id} />
+      ))}
+    </div>
   );
 };

@@ -7,7 +7,6 @@ type Props = {
 export default function BasicInfo({ data }: Props) {
   return (
     <div className='flex items-center justify-center h-full w-full  bg-gray-200'>
-      <div>写真</div>
       <div>
         <h1>{data?.title}</h1>
         <p>説明：{data?.description}</p>

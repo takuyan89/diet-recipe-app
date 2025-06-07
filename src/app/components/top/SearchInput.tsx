@@ -1,19 +1,17 @@
-type Props = {
-  value?: string;
-  handler?: (value: string) => void;
-  onEnter?: () => void;
-};
+import { SearchInputProps } from '@/types/top/types';
 
-export const SearchInput = ({ value, handler, onEnter }: Props) => {
+export const SearchInput = ({ value, handler, onEnter }: SearchInputProps) => {
   return (
     <input
-      className='border border-gray-500 rounded-2xl px-4 py-2 w-80 focus:outline-none focus:ring-2 focus:ring-blue-500'
+      className='border border-black rounded-2xl px-4 py-2 lg:w-80 focus:outline-none focus:ring-2 focus:ring-blue-300 sm:w-60'
       type='text'
-      placeholder='Search...'
+      placeholder='例: オムライス'
       value={value}
       onChange={(e) => handler?.(e.target.value)}
       onKeyDown={(e) => {
-        if (e.key === 'Enter' && onEnter) onEnter();
+        if (e.key === 'Enter' && onEnter) {
+          onEnter();
+        }
       }}
     />
   );
