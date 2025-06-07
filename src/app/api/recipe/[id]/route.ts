@@ -11,5 +11,6 @@ export async function GET(
     };
   }
 ) {
-  return await getRecipe(request, params.id);
+  const resolvedParams = await params;
+  return await getRecipe(request, resolvedParams.id);
 }
