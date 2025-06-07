@@ -12,3 +12,13 @@ export type RecipeListProps = {
   keyword?: string;
   category?: string;
 };
+
+export type ClientRecipeWrapperProps = {
+  keyword?: string;
+  category?: string;
+};
+
+export type RecipeContainerProps = {
+  keyword?: string;
+  category?: string;
+};
