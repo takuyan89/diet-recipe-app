@@ -1,22 +1,17 @@
 'use client';
+import { SearchButtonProps } from '@/types/top/types';
 import { useRouter } from 'next/navigation';
 
-type Props = {
-  keyword?: string;
-};
-
-export const SearchButton = ({ keyword }: Props) => {
+export const SearchButton = ({ keyword }: SearchButtonProps) => {
   const router = useRouter();
 
-  const handleClick = () => {
-    const trimmed = keyword?.trim();
-    if (trimmed) {
-      router.push(`/recipe?query=${encodeURIComponent(trimmed)}`);
-    }
+  const handleSearch = () => {
+    router.push(`/recipe?query=${keyword}`);
   };
+
   return (
     <button
-      onClick={handleClick}
+      onClick={handleSearch}
       className='bg-yellow-300 text-black px-4 py-2 rounded-2xl hover:bg-yellow-500 transition-colors hover:cursor-pointer'
     >
       検索

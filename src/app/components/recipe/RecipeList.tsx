@@ -1,47 +1,50 @@
 'use client';
 import { useEffect, useState } from 'react';
 import { RecipeCard } from '../ui/card/RecipeCard';
+import { RecipeListProps } from '@/types/top/types';
+import { Category, Recipe } from '@/generated/prisma';
 
-type Props = {
-  keyword?: string;
-  category?: string;
-};
+export const RecipeList = ({ keyword, category }: RecipeListProps) => {
+  const [recipes, setRecipes] = useState<Recipe[] & { categories: Category[] }>();
 
-export const RecipeList = ({ keyword, category }: Props) => {
-  const [recipes, setRecipes] = useState([]);
+  console.log(category);
+
   const fetchRecipes = async () => {
     try {
-      const data = await fetch('api/recipe');
-      if (!data.ok) {
-        throw new Error('Network response was not ok');
+      const response = await fetch('api/recipe');
+      if (!response.ok) {
+        throw new Error('ネットワークエラー: レシピの取得に失敗しました。');
       }
-      const recipes = await data.json();
-      // 🔍 フィルタ処理（keyword & category対応）
-      const filteredRecipes = recipes.filter((recipe: any) => {
-        console.log(recipe);
-        const matchKeyword = keyword ? recipe.title?.toLowerCase().includes(keyword.toLowerCase()) : true;
-        const matchCategory = category
-          ? recipe.categories?.some((c: any) => c.category.name.toLowerCase() === category.toLowerCase())
-          : true;
+      const recipes = await response.json();
+
+      const filteredRecipes = recipes.filter((recipe: Recipe & { categories: Category[] }) => {
+        const matchKeyword = keyword ? recipe.title?.includes(keyword) : true;
+        const matchCategory = category ? recipe.categories?.some((c: any) => c.category.name === category) : true;
         return matchKeyword && matchCategory;
       });
+      console.log(recipes);
       setRecipes(filteredRecipes);
     } catch (error) {
-      console.error('Error fetching recipes:', error);
+      console.error(error);
     }
   };
+
   useEffect(() => {
     fetchRecipes();
   }, [keyword, category]);
 
   return (
     <>
-      {recipes.length === 0 ? (
-        <div className='flex items-center justify-center h-full w-full bg-gray-200 p-4'>
-          <p className='text-gray-600'>レシピがありません。</p>
+      {recipes && recipes.length > 0 ? (
+        <div className='grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4 p-4'>
+          {recipes.map((recipe) => (
+            <RecipeCard key={recipe.id} recipe={recipe} />
+          ))}
         </div>
       ) : (
-        <RecipeCard data={recipes} />
+        <div className='flex items-center justify-center h-full w-full p-4'>
+          <p className='text-black'>レシピがありません。</p>
+        </div>
       )}
     </>
   );
