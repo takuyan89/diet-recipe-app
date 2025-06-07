@@ -1,12 +1,9 @@
+import { RecipeContainerProps } from '@/types/top/types';
 import { RecipeList } from '../recipe/RecipeList';
 
-type Props = {
-  keyword?: string;
-  category?: string;
-};
-export const RecipeContainer = ({ keyword, category }: Props) => {
+export const RecipeContainer = ({ keyword, category }: RecipeContainerProps) => {
   return (
-    <div className='flex flex-col items-center justify-center h-full w-full bg-gray-200 p-4'>
+    <div className='flex flex-col items-center justify-center h-full w-full  p-6'>
       <RecipeList keyword={keyword} category={category} />
     </div>
   );
