@@ -2,14 +2,14 @@
 import { useRouter } from 'next/navigation';
 
 type Props = {
-  keyword: string;
+  keyword?: string;
 };
 
 export const SearchButton = ({ keyword }: Props) => {
   const router = useRouter();
 
   const handleClick = () => {
-    const trimmed = keyword.trim();
+    const trimmed = keyword?.trim();
     if (trimmed) {
       router.push(`/recipe?query=${encodeURIComponent(trimmed)}`);
     }
