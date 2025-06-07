@@ -17,9 +17,6 @@ export const Header = () => {
           <Link href='/recipe' className='hover:text-black'>
             レシピ一覧
           </Link>
-          <Link href='/category' className='hover:text-black'>
-            カテゴリー一覧
-          </Link>
         </nav>
 
         {/* ログイン */}
