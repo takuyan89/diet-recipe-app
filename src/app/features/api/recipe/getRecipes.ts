@@ -4,7 +4,15 @@ import { NextRequest, NextResponse } from 'next/server';
 export const getRecipes = async (request: NextRequest) => {
   const prisma = new PrismaClient();
   try {
-    const recipes = await prisma.recipe.findMany();
+    const recipes = await prisma.recipe.findMany({
+      include: {
+        categories: {
+          include: {
+            category: true,
+          },
+        },
+      },
+    });
     return NextResponse.json(recipes);
   } catch (error) {
     console.error('Error fetching recipes:', error);

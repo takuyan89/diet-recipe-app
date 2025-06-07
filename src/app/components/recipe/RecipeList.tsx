@@ -18,8 +18,11 @@ export const RecipeList = ({ keyword, category }: Props) => {
       const recipes = await data.json();
       // 🔍 フィルタ処理（keyword & category対応）
       const filteredRecipes = recipes.filter((recipe: any) => {
+        console.log(recipe);
         const matchKeyword = keyword ? recipe.title?.toLowerCase().includes(keyword.toLowerCase()) : true;
-        const matchCategory = category ? recipe.category?.toLowerCase() === category.toLowerCase() : true;
+        const matchCategory = category
+          ? recipe.categories?.some((c: any) => c.category.name.toLowerCase() === category.toLowerCase())
+          : true;
         return matchKeyword && matchCategory;
       });
       setRecipes(filteredRecipes);

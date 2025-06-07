@@ -57,15 +57,6 @@ export default function RecipeForm() {
     name: 'steps',
   });
 
-  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file) {
-      const objectUrl = URL.createObjectURL(file);
-      setPreviewUrl(objectUrl);
-      setValue('recipe.imageUrl', objectUrl);
-    }
-  };
-
   async function onSubmit(values: FullRecipeFormValues) {
     const payload: FullRecipeFormValues = {
       ...values,
@@ -124,31 +115,6 @@ export default function RecipeForm() {
             placeholder='例: ふわふわパンケーキ'
           />
           {errors.recipe?.title && <p className='text-red-500 text-sm'>{errors.recipe.title.message}</p>}
-        </div>
-
-        {/* Image Upload + Preview */}
-        {/* Image Upload with Custom Button */}
-        <div>
-          <label className='block font-semibold mb-1'>画像アップロード</label>
-
-          <div className='flex items-start gap-4'>
-            {/* Hidden file input */}
-            <input type='file' accept='image/*' id='imageInput' onChange={handleImageChange} className='hidden' />
-
-            {/* Upload Button */}
-            <button
-              type='button'
-              onClick={() => document.getElementById('imageInput')?.click()}
-              className='bg-gray-200 hover:bg-gray-300 text-sm text-gray-800 px-4 py-2 rounded shadow'
-            >
-              画像を選択
-            </button>
-
-            {/* Preview */}
-            {previewUrl && (
-              <img src={previewUrl} alt='プレビュー' className='max-w-xs h-auto object-contain rounded shadow' />
-            )}
-          </div>
         </div>
 
         {/* Image URL (hidden if using upload only) */}

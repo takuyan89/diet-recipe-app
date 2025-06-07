@@ -33,7 +33,6 @@ export const createRecipe = async (request: NextRequest) => {
         title: recipe.title,
         description: recipe.description,
         calories: recipe.calories,
-        imageUrl: recipe.image || null,
         createdAt: new Date(),
         updatedAt: new Date(),
       },
