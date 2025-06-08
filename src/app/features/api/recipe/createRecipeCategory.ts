@@ -1,16 +1,6 @@
 import { PrismaClient } from '@/generated/prisma';
 import { NextRequest, NextResponse } from 'next/server';
 
-type ingredientType = {
-  name: string;
-  quantity: string;
-};
-
-type stepType = {
-  content: string;
-  order: number;
-};
-
 export const createRecipeCategory = async (request: NextRequest, recipeId: string) => {
   const prisma = new PrismaClient();
   try {
