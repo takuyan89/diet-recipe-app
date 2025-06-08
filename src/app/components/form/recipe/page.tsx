@@ -3,29 +3,8 @@
 import { useForm, useFieldArray } from 'react-hook-form';
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-
-type RecipeFormValues = {
-  title: string;
-  imageUrl: string;
-  description: string;
-  calories: number;
-};
-
-type StepFormValues = {
-  order: number;
-  content: string;
-};
-
-type IngredientFormValues = {
-  name: string;
-  quantity: string;
-};
-
-type FullRecipeFormValues = {
-  recipe: RecipeFormValues;
-  steps: StepFormValues[];
-  ingredients: IngredientFormValues[];
-};
+import { supabase } from '../../../../../supabase/supabase';
+import { FullRecipeFormValues } from '@/types/top/types';
 
 export default function RecipeForm() {
   const router = useRouter();
@@ -57,6 +36,26 @@ export default function RecipeForm() {
     name: 'steps',
   });
 
+  const handlePictureUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (!file) return;
+
+    const pictureName = `${Date.now()}-${file.name}`;
+    const { error } = await supabase.storage.from('recipes').upload(pictureName, file);
+
+    if (error) {
+      console.error(error);
+      alert('画像アップロードに失敗しました');
+      return;
+    }
+
+    const { data: urlData } = supabase.storage.from('recipes').getPublicUrl(pictureName);
+    if (urlData?.publicUrl) {
+      setPreviewUrl(urlData.publicUrl);
+      setValue('recipe.imageUrl', urlData.publicUrl);
+    }
+  };
+
   async function onSubmit(values: FullRecipeFormValues) {
     const payload: FullRecipeFormValues = {
       ...values,
@@ -65,7 +64,7 @@ export default function RecipeForm() {
         ...values.recipe,
       },
 
-      ingredients: values.ingredients.map((ingredient, index) => ({
+      ingredients: values.ingredients.map((ingredient) => ({
         ...ingredient,
       })),
       steps: values.steps.map((step, index) => ({
@@ -90,19 +89,15 @@ export default function RecipeForm() {
       const data = await response.json();
       router.push(`/recipe/${data.id}`);
     } catch (error) {
-      console.error('Error saving recipe:', error);
-      // Optionally, show error message to the user
-      alert('レシピの保存に失敗しました。もう一度お試しください。');
       console.error(error);
-      // Reset the form or handle error state as needed
+      alert('レシピの保存に失敗しました。');
     }
   }
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className='flex flex-col justify-center items-center gap-4'>
-      <h1 className='text-2xl font-bold text-center'>レシピ作成</h1>
+    <form onSubmit={handleSubmit(onSubmit)} className='flex flex-col justify-center items-center gap-4 py-10 px-4'>
+      <h1 className='text-3xl font-bold text-center'>レシピ作成</h1>
 
-      {/* Recipe Basic Info */}
       <div className='w-full max-w-md space-y-4'>
         <div>
           <label htmlFor='title' className='block font-semibold'>
@@ -112,26 +107,44 @@ export default function RecipeForm() {
             {...register('recipe.title', { required: '料理名を入力してください' })}
             id='title'
             className='border rounded p-2 w-full'
-            placeholder='例: ふわふわパンケーキ'
+            placeholder='例: ローストビーフ'
           />
           {errors.recipe?.title && <p className='text-red-500 text-sm'>{errors.recipe.title.message}</p>}
         </div>
 
-        {/* Image URL (hidden if using upload only) */}
-        <input type='hidden' {...register('recipe.imageUrl')} />
-
         <div>
-          <label className='block font-semibold'>説明</label>
-          <textarea
+          <label htmlFor='description' className='block font-semibold'>
+            説明
+          </label>
+          <input
+            id='description'
+            type='text'
             {...register('recipe.description')}
             className='border rounded p-2 w-full'
-            placeholder='レシピの説明を入力してください'
+            placeholder='例: 簡単に作れるローストビーフです。'
           />
         </div>
 
         <div>
-          <label className='block font-semibold'>カロリー</label>
+          <label className='block font-semibold mb-1'>画像アップロード</label>
+          <div className='flex flex-col items-start'>
+            <label className='cursor-pointer bg-yellow-300 hover:bg-yellow-500 transition px-4 py-2 rounded shadow'>
+              画像を選択
+              <input type='file' onChange={handlePictureUpload} className='hidden' />
+            </label>
+
+            {!previewUrl && <p className='text-sm text-gray-500 mt-1'>※ 選択されていません</p>}
+
+            {previewUrl && <img src={previewUrl} alt='preview' className='mt-2 w-full rounded' />}
+          </div>
+        </div>
+
+        <div>
+          <label htmlFor='calories' className='block font-semibold'>
+            カロリー
+          </label>
           <input
+            id='calories'
             type='number'
             {...register('recipe.calories', { valueAsNumber: true })}
             className='border rounded p-2 w-full'
@@ -140,23 +153,30 @@ export default function RecipeForm() {
         </div>
       </div>
 
-      <div className='flex'>
-        {/* 材料 */}
+      <div className='flex flex-col lg:flex-row space-x-5'>
         <div>
           <label className='block font-bold text-lg mb-2'>材料</label>
           {ingredientFields.map((field, index) => (
-            <div key={field.id} className='flex gap-2 mb-2'>
-              <input
-                {...register(`ingredients.${index}.name`, { required: '材料名を入力してください' })}
-                placeholder='例：小麦粉'
-                className='border rounded p-2 w-1/2'
-              />
-              <input
-                {...register(`ingredients.${index}.quantity`, { required: '分量を入力してください' })}
-                placeholder='例：100g'
-                className='border rounded p-2 w-1/2'
-              />
-              <button type='button' onClick={() => removeIngredient(index)} className='text-red-500 hover:underline'>
+            <div key={field.id} className='flex flex-col  mb-2'>
+              <label className='block font-semibold'>材料 {index + 1}</label>
+              <div className='flex flex-row gap-2 items-center'>
+                <input
+                  {...register(`ingredients.${index}.name`)}
+                  placeholder='例：小麦粉'
+                  className='border rounded p-2 w-1/2'
+                />
+                <input
+                  {...register(`ingredients.${index}.quantity`)}
+                  placeholder='例：100'
+                  className='border rounded p-2 w-1/2'
+                />
+                <p>g</p>
+              </div>
+              <button
+                type='button'
+                onClick={() => removeIngredient(index)}
+                className='text-red-500 mr-auto cursor-pointer text-sm mt-1 hover:underline'
+              >
                 削除
               </button>
             </div>
@@ -164,13 +184,12 @@ export default function RecipeForm() {
           <button
             type='button'
             onClick={() => addIngredient({ name: '', quantity: '' })}
-            className='text-blue-600 hover:underline'
+            className='text-blue-600 hover:underline cursor-pointer'
           >
             材料を追加
           </button>
         </div>
 
-        {/* 手順 */}
         <div>
           <label className='block font-bold text-lg mb-2'>手順</label>
           {stepFields.map((field, index) => (
@@ -184,7 +203,7 @@ export default function RecipeForm() {
               <button
                 type='button'
                 onClick={() => removeStep(index)}
-                className='text-red-500 text-sm mt-1 hover:underline'
+                className='text-red-500 text-sm mt-1 cursor-pointer hover:underline'
               >
                 削除
               </button>
@@ -193,16 +212,18 @@ export default function RecipeForm() {
           <button
             type='button'
             onClick={() => addStep({ order: stepFields.length + 1, content: '' })}
-            className='text-blue-600 hover:underline'
+            className='text-blue-600 hover:underline cursor-pointer'
           >
             手順を追加
           </button>
         </div>
       </div>
 
-      {/* 保存 */}
       <div className='text-center'>
-        <button type='submit' className='bg-blue-600 text-white px-6 py-2 rounded hover:bg-blue-700'>
+        <button
+          type='submit'
+          className='bg-yellow-300 hover:bg-yellow-500 transition text-black px-4 py-2 rounded cursor-pointer text-2xl'
+        >
           保存する
         </button>
       </div>

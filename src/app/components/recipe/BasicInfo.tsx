@@ -1,10 +1,6 @@
 import { Recipe } from '@/generated/prisma';
 
-type Props = {
-  data?: Recipe;
-};
-
-export default function BasicInfo({ data }: Props) {
+export default function BasicInfo({ data }: { data?: Recipe }) {
   return (
     <div className='flex items-center justify-center h-full w-full  bg-gray-200'>
       <div>

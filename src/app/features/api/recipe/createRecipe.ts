@@ -1,15 +1,6 @@
 import { PrismaClient } from '@/generated/prisma';
+import { ingredientType, stepType } from '@/types/top/types';
 import { NextRequest, NextResponse } from 'next/server';
-
-type ingredientType = {
-  name: string;
-  quantity: string;
-};
-
-type stepType = {
-  content: string;
-  order: number;
-};
 
 export const createRecipe = async (request: NextRequest) => {
   const prisma = new PrismaClient();
@@ -33,6 +24,7 @@ export const createRecipe = async (request: NextRequest) => {
         title: recipe.title,
         description: recipe.description,
         calories: recipe.calories,
+        imageUrl: recipe.imageUrl || null,
         createdAt: new Date(),
         updatedAt: new Date(),
       },

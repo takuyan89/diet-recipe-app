@@ -13,6 +13,7 @@ model Recipe {
   title       String
   description String?
   calories    Int?
+  imageUrl    String?
   createdAt   DateTime         @default(now())
   updatedAt   DateTime         @updatedAt
   ingredients Ingredient[]
