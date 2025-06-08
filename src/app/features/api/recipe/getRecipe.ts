@@ -9,6 +9,11 @@ export const getRecipe = async (request: NextRequest, id: string) => {
       include: {
         ingredients: true,
         steps: true,
+        categories: {
+          include: {
+            category: true,
+          },
+        },
       },
     });
     return NextResponse.json(recipe);
