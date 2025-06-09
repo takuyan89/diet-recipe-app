@@ -12,7 +12,7 @@ export const RecipeCard = ({ recipe }: { recipe: Recipe }) => {
             className='absolute top-0 left-0 w-full h-full object-cover opacity-60'
           />
         )}
-        <div className='relative z-10  backdrop-blur-sm p-2 rounded'>
+        <div className='relative z-10  p-2 rounded'>
           <h2 className='text-xl font-bold text-black'>{recipe.title}</h2>
         </div>
       </div>
