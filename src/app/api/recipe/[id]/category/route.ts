@@ -11,7 +11,6 @@ export async function POST(
     };
   }
 ) {
-  const resolvedParams = await params;
-
-  return await createRecipeCategory(request, resolvedParams.id);
+  const { id } = params;
+  return await createRecipeCategory(request, id);
 }
