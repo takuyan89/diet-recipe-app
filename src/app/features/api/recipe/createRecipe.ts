@@ -18,6 +18,9 @@ export const createRecipe = async (request: NextRequest) => {
     if (!recipe.calories) {
       return NextResponse.json({ error: 'Calories is required' }, { status: 400 });
     }
+    if (!recipe.amount) {
+      return NextResponse.json({ error: 'Amount is required' }, { status: 400 });
+    }
 
     const createdRecipe = await prisma.recipe.create({
       data: {
@@ -25,6 +28,7 @@ export const createRecipe = async (request: NextRequest) => {
         description: recipe.description,
         calories: recipe.calories,
         imageUrl: recipe.imageUrl || null,
+        amount: recipe.amount,
         createdAt: new Date(),
         updatedAt: new Date(),
       },

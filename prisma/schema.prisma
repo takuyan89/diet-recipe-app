@@ -11,9 +11,10 @@ datasource db {
 model Recipe {
   id          String           @id @default(uuid())
   title       String
-  description String?
-  calories    Int?
+  description String
+  calories    Int
   imageUrl    String?
+  amount      Int
   createdAt   DateTime         @default(now())
   updatedAt   DateTime         @updatedAt
   ingredients Ingredient[]
