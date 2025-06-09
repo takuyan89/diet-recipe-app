@@ -123,6 +123,7 @@ export default function RecipeForm() {
             className='border rounded p-2 w-full'
             placeholder='例: 簡単に作れるローストビーフです。'
           />
+          {errors.recipe?.description && <p className='text-red-500 text-sm'>{errors.recipe.description.message}</p>}
         </div>
 
         <div>
@@ -140,6 +141,20 @@ export default function RecipeForm() {
         </div>
 
         <div>
+          <label htmlFor='amount' className='block font-semibold'>
+            料理の重さ
+          </label>
+          <input
+            id='amount'
+            type='number'
+            {...register('recipe.amount', { valueAsNumber: true })}
+            className='border rounded p-2 w-full'
+            placeholder='例: 450'
+          />
+          {errors.recipe?.amount && <p className='text-red-500 text-sm'>{errors.recipe.amount.message}</p>}
+        </div>
+
+        <div>
           <label htmlFor='calories' className='block font-semibold'>
             カロリー
           </label>
@@ -150,6 +165,7 @@ export default function RecipeForm() {
             className='border rounded p-2 w-full'
             placeholder='例: 450'
           />
+          {errors.recipe?.calories && <p className='text-red-500 text-sm'>{errors.recipe.calories.message}</p>}
         </div>
       </div>
 

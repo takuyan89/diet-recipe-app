@@ -25,9 +25,10 @@ export type RecipeContainerProps = {
 
 type RecipeFormValues = {
   title: string;
-  imageUrl: string;
+  imageUrl?: string;
   description: string;
   calories: number;
+  amount: number;
 };
 
 type StepFormValues = {
